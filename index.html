@@ -1,463 +1,196 @@
 <!DOCTYPE html>
+<!-- FJT-TECH Case Management Portal v4.2. Password: NAtionalGolf$1 -->
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FJT-TECH Portal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FJT-TECH Case Management Portal</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand-dark:  #1e3a5f;
+      --brand-mid:   #2a5298;
+      --brand-light: #3b6fca;
+      --brand-pale:  #e8eef8;
+      --accent:      #f0a500;
+      --text-main:   #1a1a2e;
+      --text-sub:    #4a5568;
+      --card-bg:     #ffffff;
+      --body-bg:     #f4f7fb;
+      --radius:      12px;
+      --shadow:      0 4px 20px rgba(30,58,95,0.12);
+      --shadow-hover:0 8px 32px rgba(30,58,95,0.22);
+    }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #030712;
-      color: #f9fafb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--body-bg);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-
-    /* Header */
-    header {
-      background: #0f172a;
-      border-bottom: 1px solid #1e293b;
-      padding: 0 24px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+    #login-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 100%);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
     }
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: #fff;
-    }
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .logo-text {
-      font-weight: 600;
-      font-size: 18px;
-    }
-    .logo-sub {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-    nav { display: flex; gap: 4px; flex-wrap: wrap; }
-    nav a {
-      color: #94a3b8;
-      text-decoration: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    nav a:hover {
-      color: #fff;
-      background: rgba(255,255,255,0.05);
-    }
-    nav a.active {
-      color: #60a5fa;
-      background: rgba(96,165,250,0.1);
-    }
-
-    /* Main Content */
-    main { flex: 1; }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    .section-header {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 32px 24px 24px;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(96,165,250,0.1);
-      border: 1px solid rgba(96,165,250,0.2);
-      color: #60a5fa;
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      background: #60a5fa;
-      border-radius: 50%;
-    }
-    .section-header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 8px;
-    }
-    .section-header p {
-      font-size: 15px;
-      color: #94a3b8;
-    }
-
-    /* Iframe section */
-    .iframe-section {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px 32px;
-    }
-    .iframe-wrapper {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .iframe-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 20px;
-      border-bottom: 1px solid #1f2937;
-      background: #0f172a;
-    }
-    .iframe-header-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(96,165,250,0.1);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #60a5fa;
-      flex-shrink: 0;
-    }
-    .iframe-header-icon svg { width: 20px; height: 20px; }
-    .iframe-header-text h3 {
-      font-size: 15px;
-      font-weight: 600;
-      color: #f1f5f9;
-    }
-    .iframe-header-text p {
-      font-size: 13px;
-      color: #64748b;
-      margin-top: 2px;
-    }
-
-    /* Coming Soon placeholder */
-    .coming-soon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-      color: #475569;
-      gap: 16px;
-      padding: 48px;
-    }
-    .coming-soon svg { width: 48px; height: 48px; opacity: 0.4; }
-    .coming-soon h3 { font-size: 18px; font-weight: 600; color: #334155; }
-    .coming-soon p { font-size: 14px; color: #475569; text-align: center; max-width: 320px; }
-
-    /* Dashboard cards */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px 32px;
-    }
-    .dash-card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 12px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .dash-card:hover {
-      border-color: rgba(96,165,250,0.3);
-      background: #131f35;
-    }
-    .dash-card-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(96,165,250,0.1);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #60a5fa;
-      margin-bottom: 12px;
-    }
-    .dash-card-icon svg { width: 22px; height: 22px; }
-    .dash-card h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px; }
-    .dash-card p { font-size: 13px; color: #64748b; line-height: 1.5; }
-
-    /* Footer */
-    footer {
-      background: #0f172a;
-      border-top: 1px solid #1e293b;
-      padding: 16px 24px;
+    #login-overlay.hidden { opacity: 0; pointer-events: none; }
+    .login-box {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2.2rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
       text-align: center;
     }
-    footer p {
-      font-size: 13px;
-      color: #475569;
+    .login-box .login-logo { font-size: 1.6rem; font-weight: 800; color: var(--brand-dark); letter-spacing: -0.5px; margin-bottom: 0.25rem; }
+    .login-box .login-tagline { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-sub); margin-bottom: 1.6rem; }
+    .login-box label { display: block; text-align: left; font-size: 0.82rem; font-weight: 600; color: var(--text-sub); margin-bottom: 0.4rem; }
+    .login-box input[type="password"] { width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid #d1d9e6; border-radius: 8px; font-size: 0.95rem; color: var(--text-main); outline: none; transition: border-color 0.2s; margin-bottom: 0.8rem; }
+    .login-box input[type="password"]:focus { border-color: var(--brand-light); }
+    #login-error { font-size: 0.82rem; color: #dc2626; min-height: 1.1rem; margin-bottom: 0.6rem; display: none; }
+    .login-box button { width: 100%; padding: 0.75rem; background: var(--brand-dark); color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .login-box button:hover { background: var(--brand-mid); }
+    #portal { display: none; flex-direction: column; min-height: 100vh; }
+    #portal.visible { display: flex; }
+    header {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 60%, var(--brand-light) 100%);
+      color: #fff;
+      padding: 2rem 2.5rem 1.8rem;
+      position: relative;
+      overflow: hidden;
     }
+    header::before { content: ''; position: absolute; top: -60px; right: -80px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+    header::after { content: ''; position: absolute; bottom: -40px; left: 40%; width: 200px; height: 200px; background: rgba(255,255,255,0.04); border-radius: 50%; }
+    .header-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .header-brand h1 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+    .header-brand .tagline { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.75; margin-top: 0.3rem; }
+    .header-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 0.35rem 0.9rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; }
+    main { flex: 1; max-width: 1100px; width: 100%; margin: 2.5rem auto; padding: 0 1.5rem; }
+    .section-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text-sub); margin-bottom: 1.2rem; }
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    @media (max-width: 860px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .card-grid { grid-template-columns: 1fr; } }
+    .action-card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.6rem 1.4rem 1.4rem; display: flex; flex-direction: column; gap: 0.75rem; text-decoration: none; color: inherit; border: 1.5px solid transparent; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; position: relative; overflow: hidden; }
+    .action-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--brand-dark), var(--brand-light)); opacity: 0; transition: opacity 0.18s ease; }
+    .action-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--brand-pale); }
+    .action-card:hover::before { opacity: 1; }
+    .card-icon { font-size: 2rem; line-height: 1; }
+    .card-title { font-size: 1rem; font-weight: 700; color: var(--brand-dark); line-height: 1.3; }
+    .card-desc { font-size: 0.82rem; color: var(--text-sub); line-height: 1.55; flex: 1; }
+    .card-cta { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; color: var(--brand-mid); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 0.25rem; }
+    .card-cta::after { content: 'â'; transition: transform 0.15s; }
+    .action-card:hover .card-cta::after { transform: translateX(3px); }
+    .info-bar { margin-top: 2rem; background: var(--brand-pale); border: 1px solid #c8d8ef; border-radius: var(--radius); padding: 1rem 1.3rem; display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; color: var(--brand-dark); }
+    .info-bar .info-icon { font-size: 1.1rem; flex-shrink: 0; }
+    footer { background: var(--brand-dark); color: rgba(255,255,255,0.6); text-align: center; padding: 1.2rem; font-size: 0.75rem; letter-spacing: 0.3px; margin-top: auto; }
+    footer strong { color: rgba(255,255,255,0.9); }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header>
-    <div class="header-inner">
-      <a href="/" class="logo">
-        <div class="logo-icon">FJT</div>
-        <div>
-          <div class="logo-text">FJT-TECH</div>
-          <div class="logo-sub">Portal</div>
-        </div>
-      </a>
-      <nav id="main-nav">
-        <a href="#dashboard" class="active" onclick="showTab('dashboard', this)">Dashboard</a>
-        <a href="#case-intake" onclick="showTab('case-intake', this)">Case Intake</a>
-        <a href="#case-tasks" onclick="showTab('case-tasks', this)">Case Tasks</a>
-        <a href="#scheduler" onclick="showTab('scheduler', this)">Personal Scheduler</a>
-        <a href="#documents" onclick="showTab('documents', this)">Documents</a>
-      </nav>
+  <div id="login-overlay">
+    <div class="login-box">
+      <div class="login-logo">FJT-TECH</div>
+      <div class="login-tagline">Forensic Engineering</div>
+      <label for="pw-input">Portal Password</label>
+      <input type="password" id="pw-input" placeholder="Enter password" autocomplete="current-password" />
+      <div id="login-error">Incorrect password. Please try again.</div>
+      <button id="login-btn">Enter Portal</button>
     </div>
-  </header>
-
-  <!-- Main -->
-  <main>
-
-    <!-- Dashboard Tab -->
-    <div id="tab-dashboard" class="tab-panel active">
-      <div class="section-header">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          FJT-TECH Tools
+  </div>
+  <div id="portal">
+    <header>
+      <div class="header-inner">
+        <div class="header-brand">
+          <h1>FJT Technologies LLC</h1>
+          <div class="tagline">Forensic Engineering &amp; Expert Services</div>
         </div>
-        <h1>Dashboard</h1>
-        <p>Quick access to all FJT-TECH portal tools</p>
+        <div class="header-badge">Case Management Portal</div>
       </div>
-      <div class="dashboard-grid">
-        <div class="dash-card" onclick="showTab('case-intake', document.querySelector('[href=\'#case-intake\']'))">
-          <div class="dash-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-            </svg>
-          </div>
-          <h3>Case Intake</h3>
-          <p>Submit and manage new case intake forms</p>
-        </div>
-        <div class="dash-card" onclick="showTab('case-tasks', document.querySelector('[href=\'#case-tasks\']'))">
-          <div class="dash-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-            </svg>
-          </div>
-          <h3>Case Tasks</h3>
-          <p>Track and manage tasks for active cases</p>
-        </div>
-        <div class="dash-card" onclick="showTab('scheduler', document.querySelector('[href=\'#scheduler\']'))">
-          <div class="dash-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-            </svg>
-          </div>
-          <h3>Personal Scheduler</h3>
-          <p>Schedule and manage your appointments</p>
-        </div>
-        <div class="dash-card" onclick="showTab('documents', document.querySelector('[href=\'#documents\']'))">
-          <div class="dash-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-            </svg>
-          </div>
-          <h3>Documents</h3>
-          <p>Access and manage case documents</p>
-        </div>
+    </header>
+    <main>
+      <div class="section-title">Quick Actions</div>
+      <div class="card-grid">
+        <a class="action-card" href="https://builder.twin.so/interface/019dc363-d1fa-7c10-a07b-a9faa654c6b2" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">ð</div>
+          <div class="card-title">Create New Case</div>
+          <div class="card-desc">Paste a case narrative and create a new case in ClickUp</div>
+          <div class="card-cta">Open</div>
+        </a>
+        <a class="action-card" href="https://builder.twin.so/interface/019dd056-5957-76b3-a9fa-7513d1c5d6f8" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">â</div>
+          <div class="card-title">Assign Task</div>
+          <div class="card-desc">Assign a task to a case with estimated hours and due date</div>
+          <div class="card-cta">Open</div>
+        </a>
+        <a class="action-card" href="https://builder.twin.so/interface/019dd056-5957-76b3-a9fa-7513d1c5d6f8" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">ð</div>
+          <div class="card-title">View Case Tasks</div>
+          <div class="card-desc">View all open case tasks, assignees, and due dates</div>
+          <div class="card-cta">Open</div>
+        </a>
+        <a class="action-card" href="https://builder.twin.so/interface/019e0c64-ded5-7b40-a39a-80fd1ca0c51d" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">ð¬</div>
+          <div class="card-title">Examination Guides</div>
+          <div class="card-desc">Upload evidence lists, generate exam guides, fill in lab results</div>
+          <div class="card-cta">Open</div>
+        </a>
+        <a class="action-card" href="https://builder.twin.so/interface/019e0ca8-3545-7750-a5cd-5224433afe3f" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">ð</div>
+          <div class="card-title">Report Templates</div>
+          <div class="card-desc">Manage report templates, failure-modes documents, and knowledge base</div>
+          <div class="card-cta">Open</div>
+        </a>
+        <a class="action-card"
+           href="https://builder.twin.so/interface/019de6a5-b6ef-73a2-bcd4-6765f02eb829"
+           target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">ð</div>
+          <div class="card-title">Personal Scheduler</div>
+          <div class="card-desc">View your scheduled work blocks, Outlook calendar integration, and weekly plan</div>
+          <div class="card-cta">Open</div>
+        </a>
       </div>
-    </div>
-
-    <!-- Case Intake Tab -->
-    <div id="tab-case-intake" class="tab-panel">
-      <div class="section-header">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          FJT-TECH Tools
-        </div>
-        <h1>Case Intake</h1>
-        <p>Submit and manage new case intake forms</p>
+      <div class="info-bar">
+        <span class="info-icon">â¹ï¸</span>
+        <span>Each tool opens in a new tab. Your session is remembered for this browser tab â you will not need to log in again until you close the tab.</span>
       </div>
-      <div class="iframe-section">
-        <div class="iframe-wrapper">
-          <div class="iframe-header">
-            <div class="iframe-header-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-              </svg>
-            </div>
-            <div class="iframe-header-text">
-              <h3>Case Intake</h3>
-              <p>Submit new case intake information</p>
-            </div>
-          </div>
-          <div class="coming-soon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3>Coming Soon</h3>
-            <p>Case Intake interface will be embedded here when available.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Case Tasks Tab -->
-    <div id="tab-case-tasks" class="tab-panel">
-      <div class="section-header">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          FJT-TECH Tools
-        </div>
-        <h1>Case Tasks</h1>
-        <p>Track and manage tasks for active cases</p>
-      </div>
-      <div class="iframe-section">
-        <div class="iframe-wrapper">
-          <div class="iframe-header">
-            <div class="iframe-header-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-              </svg>
-            </div>
-            <div class="iframe-header-text">
-              <h3>Case Tasks</h3>
-              <p>Manage tasks for active cases</p>
-            </div>
-          </div>
-          <div class="coming-soon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3>Coming Soon</h3>
-            <p>Case Tasks interface will be embedded here when available.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Personal Scheduler Tab -->
-    <div id="tab-scheduler" class="tab-panel">
-      <div class="section-header">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          FJT-TECH Tools
-        </div>
-        <h1>Personal Scheduler</h1>
-        <p>Schedule and manage your appointments</p>
-      </div>
-      <div class="iframe-section" id="scheduler">
-        <div class="iframe-wrapper">
-          <div class="iframe-header">
-            <div class="iframe-header-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-              </svg>
-            </div>
-            <div class="iframe-header-text">
-              <h3>Personal Scheduler</h3>
-              <p>Manage your schedule</p>
-            </div>
-          </div>
-          <iframe
-            src="https://builder.twin.so/interface/019de6a5-b6ef-73a2-bcd4-6765f02eb829"
-            width="100%"
-            height="800"
-            frameborder="0"
-            style="border: none; border-radius: 8px;"
-            title="Personal Scheduler"
-          ></iframe>
-        </div>
-      </div>
-    </div>
-
-    <!-- Documents Tab -->
-    <div id="tab-documents" class="tab-panel">
-      <div class="section-header">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          FJT-TECH Tools
-        </div>
-        <h1>Documents</h1>
-        <p>Access and manage case documents</p>
-      </div>
-      <div class="iframe-section">
-        <div class="iframe-wrapper">
-          <div class="iframe-header">
-            <div class="iframe-header-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-              </svg>
-            </div>
-            <div class="iframe-header-text">
-              <h3>Documents</h3>
-              <p>Case document management</p>
-            </div>
-          </div>
-          <div class="coming-soon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3>Coming Soon</h3>
-            <p>Documents interface will be embedded here when available.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 FJT-TECH. All rights reserved.</p>
-  </footer>
-
+    </main>
+    <footer>
+      <strong>FJT Technologies LLC</strong> &nbsp;Â·&nbsp; Forensic Engineering &amp; Expert Services &nbsp;Â·&nbsp; Case Management Portal v4.2
+    </footer>
+  </div>
   <script>
-    function showTab(tabId, link) {
-      // Hide all panels
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      // Remove active from all nav links
-      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-      // Show selected panel
-      const panel = document.getElementById('tab-' + tabId);
-      if (panel) panel.classList.add('active');
-      // Mark link active
-      if (link) link.classList.add('active');
-    }
+    (function () {
+      var PORTAL_PASSWORD = 'NAtionalGolf$1';
+      var SESSION_KEY = 'fjt_portal_auth_v4';
+      var overlay = document.getElementById('login-overlay');
+      var portal  = document.getElementById('portal');
+      var pwInput = document.getElementById('pw-input');
+      var loginBtn = document.getElementById('login-btn');
+      var loginErr = document.getElementById('login-error');
+      function unlock() {
+        overlay.classList.add('hidden');
+        portal.classList.add('visible');
+        setTimeout(function () { overlay.style.display = 'none'; }, 450);
+      }
+      if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); }
+      function attempt() {
+        if (pwInput.value === PORTAL_PASSWORD) {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          loginErr.style.display = 'none';
+          unlock();
+        } else {
+          loginErr.style.display = 'block';
+          pwInput.value = '';
+          pwInput.focus();
+        }
+      }
+      loginBtn.addEventListener('click', attempt);
+      pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+    })();
   </script>
-
 </body>
 </html>
