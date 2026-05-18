@@ -58,13 +58,13 @@
       font-size: 12px;
       color: #94a3b8;
     }
-    nav { display: flex; gap: 8px; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; }
     nav a {
       color: #94a3b8;
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       transition: all 0.2s;
       cursor: pointer;
@@ -81,21 +81,23 @@
     /* Main Content */
     main { flex: 1; }
 
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
     .section-header {
-      text-align: center;
-      padding: 48px 24px 32px;
       max-width: 1280px;
       margin: 0 auto;
+      padding: 32px 24px 24px;
     }
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: rgba(96,165,250,0.1);
       border: 1px solid rgba(96,165,250,0.2);
       color: #60a5fa;
       padding: 4px 12px;
-      border-radius: 999px;
+      border-radius: 100px;
       font-size: 12px;
       font-weight: 500;
       margin-bottom: 16px;
@@ -107,30 +109,21 @@
       border-radius: 50%;
     }
     .section-header h1 {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
-      color: #f9fafb;
+      color: #f1f5f9;
       margin-bottom: 8px;
     }
     .section-header p {
+      font-size: 15px;
       color: #94a3b8;
-      font-size: 16px;
     }
 
-    /* Tab content panels */
-    .tab-panel {
-      display: none;
-    }
-    .tab-panel.active {
-      display: block;
-    }
-
-    /* Iframe Section */
+    /* Iframe section */
     .iframe-section {
-      padding: 0 24px 48px;
       max-width: 1280px;
       margin: 0 auto;
-      width: 100%;
+      padding: 0 24px 32px;
     }
     .iframe-wrapper {
       background: #111827;
@@ -147,8 +140,8 @@
       background: #0f172a;
     }
     .iframe-header-icon {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       background: rgba(96,165,250,0.1);
       border-radius: 8px;
       display: flex;
@@ -157,33 +150,79 @@
       color: #60a5fa;
       flex-shrink: 0;
     }
-    .iframe-header-icon svg {
-      width: 18px;
-      height: 18px;
-    }
+    .iframe-header-icon svg { width: 20px; height: 20px; }
     .iframe-header-text h3 {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      color: #f9fafb;
+      color: #f1f5f9;
     }
     .iframe-header-text p {
-      font-size: 12px;
-      color: #94a3b8;
+      font-size: 13px;
+      color: #64748b;
       margin-top: 2px;
     }
-    iframe {
-      display: block;
-      width: 100%;
+
+    /* Coming Soon placeholder */
+    .coming-soon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      color: #475569;
+      gap: 16px;
+      padding: 48px;
     }
+    .coming-soon svg { width: 48px; height: 48px; opacity: 0.4; }
+    .coming-soon h3 { font-size: 18px; font-weight: 600; color: #334155; }
+    .coming-soon p { font-size: 14px; color: #475569; text-align: center; max-width: 320px; }
+
+    /* Dashboard cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px 32px;
+    }
+    .dash-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dash-card:hover {
+      border-color: rgba(96,165,250,0.3);
+      background: #131f35;
+    }
+    .dash-card-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(96,165,250,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #60a5fa;
+      margin-bottom: 12px;
+    }
+    .dash-card-icon svg { width: 22px; height: 22px; }
+    .dash-card h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px; }
+    .dash-card p { font-size: 13px; color: #64748b; line-height: 1.5; }
 
     /* Footer */
     footer {
       background: #0f172a;
       border-top: 1px solid #1e293b;
-      padding: 20px 24px;
+      padding: 16px 24px;
       text-align: center;
-      color: #94a3b8;
+    }
+    footer p {
       font-size: 13px;
+      color: #475569;
     }
   </style>
 </head>
@@ -199,10 +238,12 @@
           <div class="logo-sub">Portal</div>
         </div>
       </a>
-      <nav>
-        <a href="#case-intake" class="active" onclick="showTab('case-intake', this)">Case Intake</a>
+      <nav id="main-nav">
+        <a href="#dashboard" class="active" onclick="showTab('dashboard', this)">Dashboard</a>
+        <a href="#case-intake" onclick="showTab('case-intake', this)">Case Intake</a>
         <a href="#case-tasks" onclick="showTab('case-tasks', this)">Case Tasks</a>
         <a href="#scheduler" onclick="showTab('scheduler', this)">Personal Scheduler</a>
+        <a href="#documents" onclick="showTab('documents', this)">Documents</a>
       </nav>
     </div>
   </header>
@@ -210,15 +251,65 @@
   <!-- Main -->
   <main>
 
+    <!-- Dashboard Tab -->
+    <div id="tab-dashboard" class="tab-panel active">
+      <div class="section-header">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          FJT-TECH Tools
+        </div>
+        <h1>Dashboard</h1>
+        <p>Quick access to all FJT-TECH portal tools</p>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dash-card" onclick="showTab('case-intake', document.querySelector('[href=\'#case-intake\']'))">
+          <div class="dash-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>
+          </div>
+          <h3>Case Intake</h3>
+          <p>Submit and manage new case intake forms</p>
+        </div>
+        <div class="dash-card" onclick="showTab('case-tasks', document.querySelector('[href=\'#case-tasks\']'))">
+          <div class="dash-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+            </svg>
+          </div>
+          <h3>Case Tasks</h3>
+          <p>Track and manage tasks for active cases</p>
+        </div>
+        <div class="dash-card" onclick="showTab('scheduler', document.querySelector('[href=\'#scheduler\']'))">
+          <div class="dash-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+          </div>
+          <h3>Personal Scheduler</h3>
+          <p>Schedule and manage your appointments</p>
+        </div>
+        <div class="dash-card" onclick="showTab('documents', document.querySelector('[href=\'#documents\']'))">
+          <div class="dash-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+            </svg>
+          </div>
+          <h3>Documents</h3>
+          <p>Access and manage case documents</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Case Intake Tab -->
-    <div id="tab-case-intake" class="tab-panel active">
+    <div id="tab-case-intake" class="tab-panel">
       <div class="section-header">
         <div class="badge">
           <span class="badge-dot"></span>
           FJT-TECH Tools
         </div>
         <h1>Case Intake</h1>
-        <p>Submit and manage new case intake requests</p>
+        <p>Submit and manage new case intake forms</p>
       </div>
       <div class="iframe-section">
         <div class="iframe-wrapper">
@@ -230,17 +321,16 @@
             </div>
             <div class="iframe-header-text">
               <h3>Case Intake</h3>
-              <p>New case submission form</p>
+              <p>Submit new case intake information</p>
             </div>
           </div>
-          <iframe
-            src="https://builder.twin.so/interface/case-intake"
-            width="100%"
-            height="800"
-            frameborder="0"
-            style="border: none; border-radius: 0 0 12px 12px;"
-            title="Case Intake"
-          ></iframe>
+          <div class="coming-soon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3>Coming Soon</h3>
+            <p>Case Intake interface will be embedded here when available.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -253,7 +343,7 @@
           FJT-TECH Tools
         </div>
         <h1>Case Tasks</h1>
-        <p>Track and manage tasks associated with active cases</p>
+        <p>Track and manage tasks for active cases</p>
       </div>
       <div class="iframe-section">
         <div class="iframe-wrapper">
@@ -265,17 +355,16 @@
             </div>
             <div class="iframe-header-text">
               <h3>Case Tasks</h3>
-              <p>Task tracking and management</p>
+              <p>Manage tasks for active cases</p>
             </div>
           </div>
-          <iframe
-            src="https://builder.twin.so/interface/case-tasks"
-            width="100%"
-            height="800"
-            frameborder="0"
-            style="border: none; border-radius: 0 0 12px 12px;"
-            title="Case Tasks"
-          ></iframe>
+          <div class="coming-soon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3>Coming Soon</h3>
+            <p>Case Tasks interface will be embedded here when available.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -290,7 +379,7 @@
         <h1>Personal Scheduler</h1>
         <p>Schedule and manage your appointments</p>
       </div>
-      <div class="iframe-section">
+      <div class="iframe-section" id="scheduler">
         <div class="iframe-wrapper">
           <div class="iframe-header">
             <div class="iframe-header-icon">
@@ -308,9 +397,43 @@
             width="100%"
             height="800"
             frameborder="0"
-            style="border: none; border-radius: 0 0 12px 12px;"
+            style="border: none; border-radius: 8px;"
             title="Personal Scheduler"
           ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents Tab -->
+    <div id="tab-documents" class="tab-panel">
+      <div class="section-header">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          FJT-TECH Tools
+        </div>
+        <h1>Documents</h1>
+        <p>Access and manage case documents</p>
+      </div>
+      <div class="iframe-section">
+        <div class="iframe-wrapper">
+          <div class="iframe-header">
+            <div class="iframe-header-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+              </svg>
+            </div>
+            <div class="iframe-header-text">
+              <h3>Documents</h3>
+              <p>Case document management</p>
+            </div>
+          </div>
+          <div class="coming-soon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3>Coming Soon</h3>
+            <p>Documents interface will be embedded here when available.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -323,32 +446,17 @@
   </footer>
 
   <script>
-    function showTab(tabId, linkEl) {
+    function showTab(tabId, link) {
       // Hide all panels
-      document.querySelectorAll('.tab-panel').forEach(function(panel) {
-        panel.classList.remove('active');
-      });
-      // Deactivate all nav links
-      document.querySelectorAll('nav a').forEach(function(a) {
-        a.classList.remove('active');
-      });
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      // Remove active from all nav links
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
       // Show selected panel
-      document.getElementById('tab-' + tabId).classList.add('active');
+      const panel = document.getElementById('tab-' + tabId);
+      if (panel) panel.classList.add('active');
       // Mark link active
-      linkEl.classList.add('active');
-      // Prevent default anchor jump
-      return false;
+      if (link) link.classList.add('active');
     }
-
-    // On page load, check hash and activate the right tab
-    (function() {
-      var hash = window.location.hash.replace('#', '');
-      var validTabs = ['case-intake', 'case-tasks', 'scheduler'];
-      if (hash && validTabs.indexOf(hash) !== -1) {
-        var link = document.querySelector('nav a[href="#' + hash + '"]');
-        if (link) showTab(hash, link);
-      }
-    })();
   </script>
 
 </body>
